@@ -1,0 +1,30 @@
+{
+  "name": "socket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "author": "Alberto Brusa",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.electron.socket",
+      "protocols": [{
+        "name": "socket",
+        "schemes": ["testapp"]
+      }],
+    "mac": {
+      "type": "development"
+    }
+  },
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.3",
+    "socket.io": "^2.0.3"
+  },
+  "devDependencies": {
+    "electron-builder": "^19.13.0"
+  }
+}
