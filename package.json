@@ -11,16 +11,21 @@
   },
   "build": {
     "appId": "com.electron.socket",
-      "protocols": [{
+    "protocols": [
+      {
         "name": "socket",
-        "schemes": ["testapp"]
-      }],
+        "schemes": [
+          "testapp"
+        ]
+      }
+    ],
     "mac": {
       "type": "development"
     }
   },
   "license": "ISC",
   "dependencies": {
+    "electron": "^1.6.11",
     "express": "^4.15.3",
     "socket.io": "^2.0.3"
   },

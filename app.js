@@ -1,23 +1,55 @@
-const electron = require('electron')
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
+const fs = require('fs');
+
+const { app, BrowserWindow, shell} = require('electron')
+const exec = require('child_process').exec;
+
 
 const path = require('path')
 const url = require('url')
 const { initServer } = require('./server')
 
 let mainWindow
+const processName = 'Contacts'
+const processDirectory = '/Applications/Contacts.app'
 
 function ready() {
     createWindow();
 }
 
+function isInstalled (callback) {
+    fs.exists(processDirectory, (exists) => {
+        callback(exists);
+    })
+}
+
+function isRunning (callback) {
+    exec(`ps ax | pgrep -i "${processName}"`, (error, stdout, stderr) => {
+            if (stdout) {
+                callback(true);
+            } else {
+                callback(false);
+            }
+        });
+}
+
 function setupListener() {
     console.log('Recieved')
+
+    isInstalled((installed) => {
+        console.log('process installed', installed);
+        if(installed) {
+            isRunning((running) => {
+                console.log('process running', running);
+                if(!running) shell.openItem(processDirectory)
+            })
+        }
+    })
+
+    
     app.on('open-url', (event, url) => {
-        event.preventDefault()
-        console.log('Starting Server')
-        console.log('event, url: ', event, ',', url)
+        event.preventDefault();
+        console.log('Starting Server');
+        console.log('event, url: ', event, ',', url);
         url.includes('startserver') && initServer(createWindow);
     })
 }
